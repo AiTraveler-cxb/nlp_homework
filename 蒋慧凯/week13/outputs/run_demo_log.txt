@@ -1,0 +1,91 @@
+
+======================================================================
+ 渐进式 Skill Harness 演示
+======================================================================
+
+[模式] progressive
+[索引大小] 72 tokens
+
+  用户：北京今天天气怎么样？
+  命中 Skill：weather
+  执行步骤：
+    - 2. 调用 weather_tool.get_weather(city)
+      → 北京今天：雷阵雨，15~23°C
+  回答：[weather] 北京今天：雷阵雨，15~23°C
+  Context 占用：索引 72 + Skill 131 = 218 tokens
+
+  用户：帮我算一下 (15 + 23) * 4 等于多少
+  命中 Skill：calculator
+  执行步骤：
+    - 2. 调用 calculator_tool.calculate(expr)
+      → (15 + 23) * 4 = 152
+  回答：[calculator] (15 + 23) * 4 = 152
+  Context 占用：索引 72 + Skill 107 = 197 tokens
+
+  用户：帮我写一份周报
+  命中 Skill：weekly_report
+  执行步骤：
+    - 1. 调用 file_tool.read_file("weekly_tasks.md") 获取本周任务列表
+      → # 本周任务
+
+- [x] 完成 Agent 需求评审
+- [x] 设计四层记忆模型
+- [ ] 跑通 agent_memory_system demo
+- [ ] 编写渐进式 Skill Harness 作业
+- [x] 整理 Week 13 学习笔记
+
+    - 4. 调用 file_tool.write_file("weekly_report_2026.md", content) 保存周报
+      → 已写入: weekly_report_2026.md
+  回答：[weekly_report] 本周共 5 项任务，已完成 3 项，待完成 2 项。
+已写入: weekly_report_2026.md
+  Context 占用：索引 72 + Skill 197 = 282 tokens
+
+[模式] full
+[索引大小] 72 tokens
+
+  用户：北京今天天气怎么样？
+  命中 Skill：weather
+  执行步骤：
+    - 2. 调用 weather_tool.get_weather(city)
+      → 北京今天：雷阵雨，15~23°C
+  回答：[weather] 北京今天：雷阵雨，15~23°C
+  Context 占用：索引 72 + Skill 435 = 521 tokens
+
+  用户：帮我算一下 (15 + 23) * 4 等于多少
+  命中 Skill：calculator
+  执行步骤：
+    - 2. 调用 calculator_tool.calculate(expr)
+      → (15 + 23) * 4 = 152
+  回答：[calculator] (15 + 23) * 4 = 152
+  Context 占用：索引 72 + Skill 435 = 524 tokens
+
+  用户：帮我写一份周报
+  命中 Skill：weekly_report
+  执行步骤：
+    - 1. 调用 file_tool.read_file("weekly_tasks.md") 获取本周任务列表
+      → # 本周任务
+
+- [x] 完成 Agent 需求评审
+- [x] 设计四层记忆模型
+- [ ] 跑通 agent_memory_system demo
+- [ ] 编写渐进式 Skill Harness 作业
+- [x] 整理 Week 13 学习笔记
+
+    - 4. 调用 file_tool.write_file("weekly_report_2026.md", content) 保存周报
+      → 已写入: weekly_report_2026.md
+  回答：[weekly_report] 本周共 5 项任务，已完成 3 项，待完成 2 项。
+已写入: weekly_report_2026.md
+  Context 占用：索引 72 + Skill 435 = 519 tokens
+
+======================================================================
+ Context 占用对比
+======================================================================
+Query                                     Progressive         Full           节省
+--------------------------------------------------------------------------------
+北京今天天气怎么样？                                        218          521          303
+帮我算一下 (15 + 23) * 4 等于多少                          197          524          327
+帮我写一份周报                                           282          519          237
+--------------------------------------------------------------------------------
+总计                                                697         1564          867
+
+渐进式模式相比全量加载，Context 总占用减少约 55.4%。
