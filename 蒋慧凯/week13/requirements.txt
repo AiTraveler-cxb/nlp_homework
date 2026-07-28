@@ -1,0 +1,4 @@
+# 渐进式 Skill Harness 依赖
+# 本作业为教学演示，不依赖真实 LLM，仅需 Python 标准库即可运行。
+# 如需更严格的 frontmatter 解析，可取消下方注释安装 PyYAML。
+# pyyaml>=6.0
